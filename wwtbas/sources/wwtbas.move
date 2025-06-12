@@ -1,9 +1,19 @@
-/*
-/// Module: wwtbas
-module wwtbas::wwtbas;
-*/
+module wwtbas::wwtbas{
+    // use std::object;
 
-// For Move coding conventions, see
-// https://docs.sui.io/concepts/sui-move-concepts/conventions
+    public struct Quiz has store{
+        id:UID,
+    }
+
+    public fun get_id(quiz: Quiz): UID {
+        quiz.id;
+    }
+
+    public fun new_quiz(ctx:&mut TxContext):Quiz{
+        let quiz=Quiz{
+        };
+        quiz;
+    }
+}
 
 
