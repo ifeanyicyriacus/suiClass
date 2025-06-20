@@ -2,15 +2,19 @@ module who_are_you::user;
 
 use std::string::String;
 
-public struct User {
+public struct User has copy, drop, store {
     username: String,
     email: String,
     password: String,
 }
 
-// // Constructor for User
+// Constructor for User
 public fun new(username: String, email: String, password: String): User {
-    User { username, email, password }
+    User {
+        username,
+        email,
+        password,
+    }
 }
 
 public fun get_username(user: &User): String { user.username }
@@ -25,26 +29,29 @@ public fun set_email(user: &mut User, new_email: String) {
     user.email = new_email;
 }
 
-fun set_password(user: &mut User, new_password: String) {
-    // In a real application, you would hash the password before storing it
-    // For simplicity, we are storing it as plain text here
-    // Note: This is not secure and should not be used in production code
-    // In a real application, you would use a secure hashing algorithm
-    // like bcrypt or Argon2 to hash the password before storing it
-    // For example: user.password = hash(new_password);
-    // Here we are just setting the password directly
-
-    user.password = new_password;
+fun set_password(user: &mut User, password: String) {
+    user.password = hash(password);
 }
 
 fun hash(password: String): String {
-    // Placeholder for a hashing function
-    // In a real application, you would implement a secure hashing algorithm
-    password // For simplicity, we return the password as is
+    // b"hashed_password".to_string().append(password);// Simulating a hash
+    // let hashed_password = password; 
+    // hashed_password
+    password
+}
+
+fun unhash(hashed_password: String): String {
+    // let hash_character_length = b"hashed_password".to_string().length();
+
+    // // println!("Hash character length: {}", hash_character_length);
+    
+    // let password = hashed_password.substring(hash_character_length, hashed_password.length()); // Simulating a unhashing
+    // password
+    hashed_password
 }
 
 public fun verify_password(user: &User, password: String): bool {
-    user.password == password
+    password == unhash(user.password)
 }
 
 public fun change_password(user: &mut User, old_password: String, new_password: String): bool {
@@ -55,16 +62,3 @@ public fun change_password(user: &mut User, old_password: String, new_password: 
         false
     }
 }
-
-// getters and setters
-// change_password
-// verify_password
-
-// Sui Task From the move book,
-// chapter 5(Hello sui) Follow the code in the chapter
-// create a user module that contain a user struct that has:
-// 	- user register
-// 	- user login
-// 	- authenticate user
-// 	- change password
-// 	- TDD should be tested

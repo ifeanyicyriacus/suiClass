@@ -1,19 +1,17 @@
 module wwtbas::wwtbas{
-    // use std::object;
 
-    public struct Quiz has store{
-        id:UID,
-    }
-
-    public fun get_id(quiz: Quiz): UID {
-        quiz.id;
+    public struct Quiz has key, store{
+        id:UID
     }
 
     public fun new_quiz(ctx:&mut TxContext):Quiz{
         let quiz=Quiz{
+            id:object::new(ctx),
         };
-        quiz;
+        transfer::public_transfer(quiz, ctx.sender());
+        quiz
     }
+    
 }
 
 
